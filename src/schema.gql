@@ -1,0 +1,104 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type User {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+type profile {
+  id: String!
+  name: String!
+  email: String!
+  createAt: DateTime!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Polls {
+  id: Int!
+  description: String!
+  questionType: String!
+  endTime: DateTime!
+  minOption: Float!
+  maxOption: Float!
+  choices: [Choice!]
+}
+
+type Choice {
+  id: Int!
+  chooseOption: String!
+}
+
+type Query {
+  users: [User!]!
+  user(id: Int!): User!
+  profiles: [profile!]!
+  profile(id: Int!): profile!
+  poll(id: Int!): Polls!
+}
+
+type Mutation {
+  createUser(createUserInput: CreateUserInput!): User!
+  updateUser(updateUserInput: UpdateUserInput!): User!
+  removeUser(id: Int!): User!
+  createProfile(data: CreateProfileInput!): profile!
+  updateProfile(updateProfileInput: UpdateProfileInput!): profile!
+  removeProfile(id: Int!): profile!
+  createPoll(createPollInput: CreatePollInput!): Polls!
+  updatePoll(updatePollInput: UpdatePollInput!): Polls!
+  removePoll(id: Int!): Polls!
+}
+
+input CreateUserInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input UpdateUserInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
+}
+
+input CreateProfileInput {
+  name: String!
+  email: String!
+}
+
+input UpdateProfileInput {
+  name: String
+  email: String
+  id: Int!
+}
+
+input CreatePollInput {
+  pollName: String!
+  description: String!
+  questionType: String!
+  postedAt: DateTime!
+  pollExipry: DateTime!
+  minOptions: Float!
+  maxOptions: Float!
+  option: [CreateOptionInput!]
+}
+
+input CreateOptionInput {
+  text: String!
+}
+
+input UpdatePollInput {
+  pollName: String
+  description: String
+  questionType: String
+  postedAt: DateTime
+  pollExipry: DateTime
+  minOptions: Float
+  maxOptions: Float
+  option: [CreateOptionInput!]
+  id: Int!
+}
