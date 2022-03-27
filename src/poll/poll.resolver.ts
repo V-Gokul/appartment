@@ -1,9 +1,16 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Args,
+  Int,
+  ResolveField,
+} from '@nestjs/graphql';
 import { PollService } from './poll.service';
 
 import { CreatePollInput } from './dto/create-poll.input';
 import { UpdatePollInput } from './dto/update-poll.input';
-import { Polls } from 'src/polls/poll.model';
+import { Polls } from './poll.model';
 
 @Resolver(() => Polls)
 export class PollResolver {
@@ -32,5 +39,10 @@ export class PollResolver {
   @Mutation(() => Polls)
   removePoll(@Args('id', { type: () => Int }) id: number) {
     return this.pollService.remove(id);
+  }
+
+  @ResolveField()
+  async option(@parent() poll: Polls) {
+    return this.pollService.getOption(poll);
   }
 }

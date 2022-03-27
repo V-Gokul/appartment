@@ -1,41 +1,41 @@
-import { InputType, Int, Field } from '@nestjs/graphql';
-import { IsNotEmpty, IsOptional } from 'class-validator';
+// import { InputType, Int, Field } from '@nestjs/graphql';
+// import { IsNotEmpty, IsOptional } from 'class-validator';
 
-@InputType()
-export class CreatePollInput {
-  @Field()
-  @IsNotEmpty()
-  pollName: string;
+// @InputType()
+// export class CreatePollInput {
+//   @Field()
+//   @IsNotEmpty()
+//   pollName: string;
 
-  @Field()
-  @IsNotEmpty()
-  description: string;
+//   @Field()
+//   @IsNotEmpty()
+//   description: string;
 
-  @Field()
-  @IsNotEmpty()
-  questionType: string;
+//   @Field()
+//   @IsNotEmpty()
+//   questionType: string;
 
-  @Field()
-  @IsNotEmpty()
-  endTime: Date;
+//   @Field()
+//   @IsNotEmpty()
+//   endTime: Date;
 
-  @Field()
-  @IsOptional()
-  minOption: number;
+//   @Field()
+//   @IsOptional()
+//   minOption: number;
 
-  @Field()
-  @IsOptional()
-  maxOption: number;
+//   @Field()
+//   @IsOptional()
+//   maxOption: number;
 
-  @Field(() => [CreateChoiceInput], { nullable: true })
-  @IsNotEmpty()
-  @IsOptional()
-  choices: CreateChoiceInput[];
-}
+//   @Field(() => [CreateChoiceInput], { nullable: true })
+//   @IsNotEmpty()
+//   @IsOptional()
+//   choices: CreateChoiceInput[];
+// }
 
-@InputType()
-export class CreateChoiceInput {
-  @Field()
-  @IsNotEmpty()
-  chooseOptions: string;
-}
+// @InputType()
+// export class CreateChoiceInput {
+//   @Field()
+//   @IsNotEmpty()
+//   chooseOptions: string;
+// }

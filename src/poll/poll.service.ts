@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreatePollInput } from './dto/create-poll.input';
@@ -22,9 +22,9 @@ export class PollService {
         createMany: {
           data: createPollInput.option,
         },
-        connect: {},
       };
     }
+    return this.prisma.polls.create({ data });
   }
 
   findAll() {
@@ -41,5 +41,13 @@ export class PollService {
 
   remove(id: number) {
     return `This action removes a #${id} poll`;
+  }
+  async getOption(id: number, pollsId: number) {
+    const option = await this.prisma.options.findFirst({
+      where: { id, AND: { pollsId } },
+    });
+    if (!option)
+      throw new NotFoundException(`option id: ${id} not found for poll`);
+    return { id: option.id };
   }
 }
