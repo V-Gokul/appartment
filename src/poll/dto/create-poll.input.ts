@@ -22,7 +22,7 @@ export class CreatePollInput {
 
   @Field()
   @IsNotEmpty()
-  pollExipry: Date;
+  pollExpiry: Date;
 
   @Field()
   @IsOptional()

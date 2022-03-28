@@ -3,6 +3,7 @@ import { PollService } from './poll.service';
 import { PollResolver } from './poll.resolver';
 
 @Module({
-  providers: [PollResolver, PollService]
+  providers: [PollResolver, PollService],
+  exports: [PollService],
 })
 export class PollModule {}

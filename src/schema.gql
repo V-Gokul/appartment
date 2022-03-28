@@ -23,15 +23,22 @@ type Polls {
   id: Int!
   description: String!
   questionType: String!
-  endTime: DateTime!
-  minOption: Float!
-  maxOption: Float!
-  opchoices: [Choice!]
+  postedAt: String!
+  pollExpiry: String!
+  minOptions: Float!
+  maxOptions: Float!
+  option: [Option!]
 }
 
-type Choice {
+type Option {
   id: Int!
-  chooseOption: String!
+  text: String!
+  pollSelection: [PollSelection!]
+}
+
+type PollSelection {
+  id: Int!
+  profileId: profile!
 }
 
 type Query {
@@ -39,6 +46,7 @@ type Query {
   user(id: Int!): User!
   profiles: [profile!]!
   profile(id: Int!): profile!
+  polls: [Polls!]!
   poll(id: Int!): Polls!
 }
 
@@ -50,8 +58,7 @@ type Mutation {
   updateProfile(updateProfileInput: UpdateProfileInput!): profile!
   removeProfile(id: Int!): profile!
   createPoll(createPollInput: CreatePollInput!): Polls!
-  updatePoll(updatePollInput: UpdatePollInput!): Polls!
-  removePoll(id: Int!): Polls!
+  removePoll(data: UpdatePollInput!): Polls!
 }
 
 input CreateUserInput {
@@ -81,7 +88,7 @@ input CreatePollInput {
   description: String!
   questionType: String!
   postedAt: DateTime!
-  pollExipry: DateTime!
+  pollExpiry: DateTime!
   minOptions: Float!
   maxOptions: Float!
   option: [CreateOptionInput!]
@@ -96,7 +103,7 @@ input UpdatePollInput {
   description: String
   questionType: String
   postedAt: DateTime
-  pollExipry: DateTime
+  pollExpiry: DateTime
   minOptions: Float
   maxOptions: Float
   option: [CreateOptionInput!]

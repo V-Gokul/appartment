@@ -17,11 +17,10 @@ model polls {
   questionType String
   postedAt     DateTime  @default(now())
   pollExpiry   DateTime
-  minOptions    Int?
-  maxOptions    Int?
+  minOptions   Int?
+  maxOptions   Int?
+  isAvailable  Boolean @default(true)
   options      options[]
-
-  // choices      choices[]
   // appartments Int[]
   // block Int[]
 
@@ -42,19 +41,10 @@ model pollSelection {
   profileId profile[]
 }
 
-// model choices {
-//   id            Int       @id @default(autoincrement())
-//   chooseOptions String
-//   votedBy       profile[]
-//   polls         polls?    @relation(fields: [pollsId], references: [id])
-//   pollsId       Int?
-// }
-
 model profile {
   id              Int            @id @default(autoincrement())
   name            String
   email           String
-  // choices  choices[]
   createAt        DateTime       @default(now())
   pollSelection   pollSelection? @relation(fields: [pollSelectionId], references: [id])
   pollSelectionId Int?

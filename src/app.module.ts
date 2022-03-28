@@ -13,7 +13,7 @@ import { PollModule } from './poll/poll.module';
 @Module({
   imports: [
     UsersModule,
-    // PollsModule,
+
     PrismaModule,
 
     GraphQLModule.forRoot<ApolloDriverConfig>({
