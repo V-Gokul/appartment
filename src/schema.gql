@@ -21,6 +21,7 @@ scalar DateTime
 
 type Polls {
   id: Int!
+  pollName: String!
   description: String!
   questionType: String!
   postedAt: String!
@@ -58,7 +59,8 @@ type Mutation {
   updateProfile(updateProfileInput: UpdateProfileInput!): profile!
   removeProfile(id: Int!): profile!
   createPoll(createPollInput: CreatePollInput!): Polls!
-  removePoll(data: UpdatePollInput!): Polls!
+  pollUpdate(id: Int!, data: UpdatePollInput!): Polls!
+  removePoll(id: Int!): Polls!
 }
 
 input CreateUserInput {
@@ -107,5 +109,15 @@ input UpdatePollInput {
   minOptions: Float
   maxOptions: Float
   option: [CreateOptionInput!]
+  options: [UpdateOptionInput!]
+  selection: [UpdatePollSelectionInput!]
+}
+
+input UpdateOptionInput {
+  id: Int!
+  text: String
+}
+
+input UpdatePollSelectionInput {
   id: Int!
 }

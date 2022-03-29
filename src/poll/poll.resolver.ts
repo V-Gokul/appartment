@@ -12,6 +12,7 @@ import { PollService } from './poll.service';
 import { CreatePollInput } from './dto/create-poll.input';
 import { UpdatePollInput } from './dto/update-poll.input';
 import { Polls } from './poll.model';
+import { identity } from 'rxjs';
 
 @Resolver(() => Polls)
 export class PollResolver {
@@ -33,14 +34,17 @@ export class PollResolver {
   }
 
   @Mutation(() => Polls)
-  removePoll(@Args('data') updatePollInput: UpdatePollInput) {
-    return this.pollService.removePoll(updatePollInput.id, updatePollInput);
+  pollUpdate(
+    @Args('id', { type: () => Int }) id: number,
+    @Args('data') data: UpdatePollInput,
+  ) {
+    return this.pollService.pollUpdate(id, data);
   }
 
-  // @Mutation(() => Polls)
-  // removePoll(@Args('id', { type: () => Int }) id: number) {
-  //   return this.pollService.remove(id);
-  // }
+  @Mutation(() => Polls)
+  removePoll(@Args('id', { type: () => Int }) id: number) {
+    return this.pollService.removePoll(id);
+  }
 
   @ResolveField()
   async option(@Parent() poll: Polls) {

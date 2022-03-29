@@ -3,7 +3,7 @@ import { Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreatePollInput } from './dto/create-poll.input';
 import { UpdatePollInput } from './dto/update-poll.input';
-import { Polls } from './poll.model';
+import { Option, Polls, PollSelection } from './poll.model';
 
 @Injectable()
 export class PollService {
@@ -42,8 +42,41 @@ export class PollService {
     if (!poll) throw new NotFoundException(`poll id ${id} not found`);
     return poll;
   }
+  async pollUpdate(id: number, updatePollInput: UpdatePollInput) {
+    await this.findOne(id);
+    const data: Prisma.pollsUpdateInput = {
+      pollName: updatePollInput.pollName,
+      description: updatePollInput.description,
+      maxOptions: updatePollInput.maxOptions,
+      minOptions: updatePollInput.maxOptions,
+      //  { connect: { id: updatePollInput.selection } },
+    };
+    if (updatePollInput.options) {
+      for (const optionPoll of updatePollInput.options) {
+        const pollOption = await this.prisma.options
+          .findUnique({
+            where: { id: optionPoll.id },
+          })
+          .polls();
+        if (!pollOption) {
+          throw new NotFoundException(`optionId: ${id}not found`);
+        }
+        data.options = {
+          update: {
+            where: { id: optionPoll.id },
+            data: { text: optionPoll.text },
+          },
+          // connect: { id: updatePollInput.selection }
+        };
+      }
+    }
+    if(updatePollInput.selection){
+      data.
+    }
+    return this.prisma.polls.update({ where: { id }, data });
+  }
 
-  async removePoll(id: number, updatePollInput: UpdatePollInput) {
+  async removePoll(id: number) {
     await this.findOne(id);
     const data: Prisma.pollsUpdateInput = {
       isAvailable: false,
@@ -53,14 +86,6 @@ export class PollService {
       data,
     });
   }
-
-  async remove(id: number) {
-    const pollm = await this.findOne(id);
-    await this.prisma.polls.delete({ where: { id } });
-    if (!pollm) throw new NotFoundException(`poll id ${id}not found`);
-    return pollm;
-  }
-
   async getOption(poll: Polls) {
     return await this.prisma.polls
       .findUnique({ where: { id: poll.id } })

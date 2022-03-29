@@ -7,6 +7,9 @@ export class Polls {
   id: number;
 
   @Field()
+  pollName: string;
+
+  @Field()
   description: string;
 
   @Field()
@@ -49,5 +52,5 @@ export class PollSelection {
   profileId: profile;
 }
 
-@ObjectType()
-export class DeletePoll extends OmitType(Polls, ['option']) {}
+// @ObjectType()
+// export class DeletePoll extends OmitType(Polls, ['option']) {}
