@@ -19,33 +19,47 @@ model polls {
   pollExpiry   DateTime
   minOptions   Int?
   maxOptions   Int?
-  isAvailable  Boolean @default(true)
+  isAvailable  Boolean   @default(true)
   options      options[]
   // appartments Int[]
   // block Int[]
 
+  pollSelection pollSelection[]
 }
 
 model options {
   id            Int             @id @default(autoincrement())
   text          String
-  polls         polls?          @relation(fields: [pollsId], references: [id])
+  polls         polls           @relation(fields: [pollsId], references: [id])
   pollsId       Int
   pollSelection pollSelection[]
 }
 
 model pollSelection {
-  id        Int       @id @default(autoincrement())
-  options   options?  @relation(fields: [optionsId], references: [id])
-  optionsId Int?
-  profileId profile[]
+  id         Int     @id @default(autoincrement())
+  poll       polls   @relation(fields: [poll_id], references: [id])
+  poll_id    Int
+  options    options @relation(fields: [optionsId], references: [id])
+  optionsId  Int
+  profile    profile @relation(fields: [profile_id], references: [id])
+  profile_id Int
+
 }
 
 model profile {
-  id              Int            @id @default(autoincrement())
-  name            String
-  email           String
-  createAt        DateTime       @default(now())
-  pollSelection   pollSelection? @relation(fields: [pollSelectionId], references: [id])
-  pollSelectionId Int?
+  id            Int             @id @default(autoincrement())
+  name          String
+  email         String
+  createAt      DateTime        @default(now())
+  pollSelection pollSelection[]
+  notice_bord   noticeBord[]
+}
+
+model noticeBord {
+  id          Int     @id @default(autoincrement())
+  title       String
+  description String
+  image       String
+  profile     profile @relation(fields: [profile_id], references: [id])
+  profile_id  Int
 }

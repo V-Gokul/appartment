@@ -1,9 +1,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { CreatePollInput } from './dto/create-poll.input';
-import { UpdatePollInput } from './dto/update-poll.input';
-import { Option, Polls, PollSelection } from './poll.model';
+import {
+  CreatePollInput,
+  CreatePollSelectionInput,
+} from './dto/create-poll.input';
+import { Polls } from './poll.model';
 
 @Injectable()
 export class PollService {
@@ -42,38 +44,45 @@ export class PollService {
     if (!poll) throw new NotFoundException(`poll id ${id} not found`);
     return poll;
   }
-  async pollUpdate(id: number, updatePollInput: UpdatePollInput) {
-    await this.findOne(id);
-    const data: Prisma.pollsUpdateInput = {
-      pollName: updatePollInput.pollName,
-      description: updatePollInput.description,
-      maxOptions: updatePollInput.maxOptions,
-      minOptions: updatePollInput.maxOptions,
-      //  { connect: { id: updatePollInput.selection } },
+  async createPollSelection(createSelection: CreatePollSelectionInput) {
+    // if(createSelection.option_id){
+    //   const ids = [];
+    //   for (const id of createSelection.option_id){
+    //     ids.push(await this.prisma.options.findUnique({where: { id: id}}))
+    //   }
+
+    // }
+    // const option_ids = [];
+    // for (const options of createSelection.option_id) {
+    //   option_ids.push(await this.prisma.options.findUnique(options));
+    // }
+
+    const data: Prisma.pollSelectionCreateInput = {
+      options: {
+        // connect: option_ids,
+      },
+
+      profile: {
+        connect: { id: createSelection.profile_id },
+      },
+      poll: {
+        connect: { id: createSelection.poll_id },
+      },
     };
-    if (updatePollInput.options) {
-      for (const optionPoll of updatePollInput.options) {
-        const pollOption = await this.prisma.options
-          .findUnique({
-            where: { id: optionPoll.id },
-          })
-          .polls();
-        if (!pollOption) {
-          throw new NotFoundException(`optionId: ${id}not found`);
-        }
-        data.options = {
-          update: {
-            where: { id: optionPoll.id },
-            data: { text: optionPoll.text },
-          },
-          // connect: { id: updatePollInput.selection }
-        };
-      }
-    }
-    if(updatePollInput.selection){
-      data.
-    }
-    return this.prisma.polls.update({ where: { id }, data });
+    // const data: Prisma.pollSelectionCreateInput = {
+    //   options: {
+    //     connect: { id: createSelection.option_id },
+    //   },
+
+    //   profile: {
+    //     connect: { id: createSelection.profile_id },
+    //   },
+    //   poll: {
+    //     connect: { id: createSelection.poll_id },
+    //   },
+    // };
+
+    return await this.prisma.pollSelection.create({ data });
   }
 
   async removePoll(id: number) {
@@ -90,5 +99,11 @@ export class PollService {
     return await this.prisma.polls
       .findUnique({ where: { id: poll.id } })
       .options();
+  }
+
+  async getSelection(poll: Polls) {
+    return await this.prisma.polls
+      .findUnique({ where: { id: poll.id } })
+      .pollSelection();
   }
 }

@@ -9,9 +9,15 @@ import {
 } from '@nestjs/graphql';
 import { PollService } from './poll.service';
 
-import { CreatePollInput } from './dto/create-poll.input';
-import { UpdatePollInput } from './dto/update-poll.input';
-import { Polls } from './poll.model';
+import {
+  CreatePollInput,
+  CreatePollSelectionInput,
+} from './dto/create-poll.input';
+import {
+  // createPollSelectionInput,
+  UpdatePollInput,
+} from './dto/update-poll.input';
+import { Option, Polls, PollSelection } from './poll.model';
 import { identity } from 'rxjs';
 
 @Resolver(() => Polls)
@@ -34,20 +40,23 @@ export class PollResolver {
   }
 
   @Mutation(() => Polls)
-  pollUpdate(
-    @Args('id', { type: () => Int }) id: number,
-    @Args('data') data: UpdatePollInput,
-  ) {
-    return this.pollService.pollUpdate(id, data);
-  }
-
-  @Mutation(() => Polls)
   removePoll(@Args('id', { type: () => Int }) id: number) {
     return this.pollService.removePoll(id);
   }
-
-  @ResolveField()
+  @ResolveField(() => Option)
   async option(@Parent() poll: Polls) {
     return this.pollService.getOption(poll);
+  }
+
+  @Mutation(() => PollSelection)
+  pollselection(
+    @Args('data') createPollSelectionInput: CreatePollSelectionInput,
+  ) {
+    return this.pollService.createPollSelection(createPollSelectionInput);
+  }
+
+  @Mutation(() => PollSelection)
+  async selection(@Parent() poll: Polls) {
+    return this.pollService.getSelection(poll);
   }
 }

@@ -1,5 +1,4 @@
-import { Field, InputType, Int, ObjectType, OmitType } from '@nestjs/graphql';
-import { profile } from 'src/profiles/profile.model';
+import { Field, Int, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 export class Polls {
@@ -27,7 +26,7 @@ export class Polls {
   @Field()
   maxOptions: number;
 
-  @Field(() => [Option], { nullable: true })
+  @Field(() => [Option])
   option: Option[];
 }
 
@@ -38,9 +37,6 @@ export class Option {
 
   @Field()
   text: string;
-
-  @Field(() => [PollSelection], { nullable: true })
-  pollSelection: Option[];
 }
 
 @ObjectType()
@@ -48,9 +44,6 @@ export class PollSelection {
   @Field(() => Int)
   id: number;
 
-  @Field(() => profile)
-  profileId: profile;
+  // @Field(() => profile)
+  // profileId: profile;
 }
-
-// @ObjectType()
-// export class DeletePoll extends OmitType(Polls, ['option']) {}

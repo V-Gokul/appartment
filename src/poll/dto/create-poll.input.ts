@@ -1,6 +1,5 @@
-import { Int, Field, InputType } from '@nestjs/graphql';
+import { Field, InputType, Int } from '@nestjs/graphql';
 import { IsNotEmpty, IsOptional } from 'class-validator';
-import { findBreakingChanges } from 'graphql';
 
 @InputType()
 export class CreatePollInput {
@@ -24,11 +23,11 @@ export class CreatePollInput {
   @IsNotEmpty()
   pollExpiry: Date;
 
-  @Field()
+  @Field(() => Int)
   @IsOptional()
   minOptions: number;
 
-  @Field()
+  @Field(() => Int)
   @IsOptional()
   maxOptions: number;
 
@@ -43,8 +42,23 @@ export class CreateOptionInput {
   @Field()
   @IsNotEmpty()
   text: string;
+}
+
+@InputType()
+export class CreatePollSelectionInput {
+  @Field(() => Int)
+  @IsNotEmpty()
+  profile_id: number;
+
+  @Field(() => Int)
+  @IsNotEmpty()
+  poll_id: number;
+
+  @Field(() => [Int])
+  @IsNotEmpty()
+  option_id: [number];
 
   // @Field(() => Int)
   // @IsNotEmpty()
-  // profileId: number;
+  // option_id: number;
 }

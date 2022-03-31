@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { UsersModule } from './users/users.module';
 // import { PollsModule } from './polls/polls.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
@@ -10,10 +9,10 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
 import { ProfilesModule } from './profiles/profiles.module';
 import { PollModule } from './poll/poll.module';
+import { NoticeBoardModule } from './notice-board/notice-board.module';
+
 @Module({
   imports: [
-    UsersModule,
-
     PrismaModule,
 
     GraphQLModule.forRoot<ApolloDriverConfig>({
@@ -24,6 +23,8 @@ import { PollModule } from './poll/poll.module';
     ProfilesModule,
 
     PollModule,
+
+    NoticeBoardModule,
   ],
   controllers: [AppController],
   providers: [AppService],

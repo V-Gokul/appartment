@@ -2,11 +2,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type User {
-  """Example field (placeholder)"""
-  exampleField: Int!
-}
-
 type profile {
   id: String!
   name: String!
@@ -28,50 +23,45 @@ type Polls {
   pollExpiry: String!
   minOptions: Float!
   maxOptions: Float!
-  option: [Option!]
+  option: [Option!]!
 }
 
 type Option {
   id: Int!
   text: String!
-  pollSelection: [PollSelection!]
 }
 
 type PollSelection {
   id: Int!
-  profileId: profile!
+}
+
+type noticeBoard {
+  id: Int!
+  title: String!
+  description: String!
+  image: String!
+  profile_id: profile!
 }
 
 type Query {
-  users: [User!]!
-  user(id: Int!): User!
   profiles: [profile!]!
   profile(id: Int!): profile!
   polls: [Polls!]!
   poll(id: Int!): Polls!
+  noticeBoard(id: Int!): noticeBoard!
 }
 
 type Mutation {
-  createUser(createUserInput: CreateUserInput!): User!
-  updateUser(updateUserInput: UpdateUserInput!): User!
-  removeUser(id: Int!): User!
   createProfile(data: CreateProfileInput!): profile!
   updateProfile(updateProfileInput: UpdateProfileInput!): profile!
   removeProfile(id: Int!): profile!
   createPoll(createPollInput: CreatePollInput!): Polls!
-  pollUpdate(id: Int!, data: UpdatePollInput!): Polls!
   removePoll(id: Int!): Polls!
-}
-
-input CreateUserInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
-}
-
-input UpdateUserInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
+  pollselection(data: CreatePollSelectionInput!): PollSelection!
+  selection: PollSelection!
+  createNoticeBoard(createNoticeBoardInput: CreateNoticeBoardInput!): noticeBoard!
+  updateNoticeBoard(id: Int!, data: UpdateNoticeBoardInput!): noticeBoard!
+  removeNoticeBoard(id: Int!): noticeBoard!
 }
 
 input CreateProfileInput {
@@ -91,8 +81,8 @@ input CreatePollInput {
   questionType: String!
   postedAt: DateTime!
   pollExpiry: DateTime!
-  minOptions: Float!
-  maxOptions: Float!
+  minOptions: Int!
+  maxOptions: Int!
   option: [CreateOptionInput!]
 }
 
@@ -100,24 +90,22 @@ input CreateOptionInput {
   text: String!
 }
 
-input UpdatePollInput {
-  pollName: String
+input CreatePollSelectionInput {
+  profile_id: Int!
+  poll_id: Int!
+  option_id: [Int!]!
+}
+
+input CreateNoticeBoardInput {
+  title: String!
+  description: String!
+  images: String!
+  profile_id: Int!
+}
+
+input UpdateNoticeBoardInput {
+  title: String
   description: String
-  questionType: String
-  postedAt: DateTime
-  pollExpiry: DateTime
-  minOptions: Float
-  maxOptions: Float
-  option: [CreateOptionInput!]
-  options: [UpdateOptionInput!]
-  selection: [UpdatePollSelectionInput!]
-}
-
-input UpdateOptionInput {
-  id: Int!
-  text: String
-}
-
-input UpdatePollSelectionInput {
-  id: Int!
+  images: String
+  profile_id: Int
 }
